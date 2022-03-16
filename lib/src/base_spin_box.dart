@@ -20,10 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_spinbox_fork/src/number_formatter.dart';
-import 'package:meta/meta.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -53,7 +52,7 @@ abstract class BaseSpinBoxState<T extends BaseSpinBox> extends State<T> {
     return double.tryParse(text.replaceAll(',', ''));
   }
 
-  String _formatText(dynamic? number) {
+  String _formatText(dynamic number) {
     return formatCurrencyForeign(
       number,
       decimals: widget.numOfDecimals,
@@ -66,8 +65,8 @@ abstract class BaseSpinBoxState<T extends BaseSpinBox> extends State<T> {
     super.initState();
     _value = widget.value;
     _controller = TextEditingController(
-        text:
-            _formatText(_value!.toInt() == _value ? _value!.toInt() : _value));
+      text: _formatText(_value!.toInt() == _value ? _value!.toInt() : _value),
+    );
     _controller!.addListener(_updateValue);
     _focusNode = FocusNode(onKey: (node, event) => _handleKey(event));
     _focusNode!.addListener(() => setState(_selectAll));
@@ -86,13 +85,18 @@ abstract class BaseSpinBoxState<T extends BaseSpinBox> extends State<T> {
     super.dispose();
   }
 
-  bool _handleKey(RawKeyEvent event) {
+  KeyEventResult _handleKey(RawKeyEvent event) {
+    KeyEventResult result = KeyEventResult.ignored;
     if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
-      return event is RawKeyUpEvent || setValue(value! + widget.step);
+      if (event is RawKeyUpEvent || setValue((value ?? 0) + widget.step)) {
+        result = KeyEventResult.handled;
+      }
     } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
-      return event is RawKeyUpEvent || setValue(value! - widget.step);
+      if (event is RawKeyUpEvent || setValue((value ?? 0) - widget.step)) {
+        result = KeyEventResult.handled;
+      }
     }
-    return false;
+    return result;
   }
 
   void _updateValue() {
@@ -103,7 +107,7 @@ abstract class BaseSpinBoxState<T extends BaseSpinBox> extends State<T> {
   }
 
   bool setValue(double v) {
-    final newValue = v.clamp(widget.min, widget.max).toDouble();
+    final newValue = v.clamp(widget.min, widget.max);
     if (newValue == value) return false;
     final text =
         _formatText(newValue.toInt() == newValue ? newValue.toInt() : newValue);

@@ -23,8 +23,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinbox_fork/src/number_formatter.dart';
 
 import '../base_spin_box.dart';
@@ -88,10 +86,14 @@ class SpinBox extends BaseSpinBox {
         incrementIcon = incrementIcon ?? const Icon(Icons.add),
         decrementIcon = decrementIcon ?? const Icon(Icons.remove),
         super(key: key) {
-    assert(this.decoration.prefixIcon == null,
-        'InputDecoration.prefixIcon is reserved for SpinBox decrement icon');
-    assert(this.decoration.suffixIcon == null,
-        'InputDecoration.suffixIcon is reserved for SpinBox increment icon');
+    assert(
+      this.decoration.prefixIcon == null,
+      'InputDecoration.prefixIcon is reserved for SpinBox decrement icon',
+    );
+    assert(
+      this.decoration.suffixIcon == null,
+      'InputDecoration.suffixIcon is reserved for SpinBox increment icon',
+    );
   }
 
   /// The minimum value the user can enter.
@@ -222,7 +224,7 @@ class _SpinBoxState extends BaseSpinBoxState<SpinBox> {
     if (hasFocus) {
       switch (theme.brightness) {
         case Brightness.dark:
-          return theme.accentColor;
+          return theme.colorScheme.secondary;
         case Brightness.light:
           return theme.primaryColor;
       }
@@ -274,15 +276,21 @@ class _SpinBoxState extends BaseSpinBoxState<SpinBox> {
       }
       if (decoration.helperText != null) {
         bottom = max(
-            bottom,
-            _textHeight(
-                decoration.helperText, caption!.merge(decoration.helperStyle)));
+          bottom,
+          _textHeight(
+            decoration.helperText,
+            caption!.merge(decoration.helperStyle),
+          ),
+        );
       }
       if (decoration.counterText != null) {
         bottom = max(
-            bottom,
-            _textHeight(decoration.counterText,
-                caption!.merge(decoration.counterStyle)));
+          bottom,
+          _textHeight(
+            decoration.counterText,
+            caption!.merge(decoration.counterStyle),
+          ),
+        );
       }
       if (bottom > 0) bottom += 8.0; // subTextGap
     }
@@ -340,7 +348,8 @@ class _SpinBoxState extends BaseSpinBoxState<SpinBox> {
       onSubmitted: fixupValue,
       onTap: () {
         controller!.selection = TextSelection.fromPosition(
-            TextPosition(offset: controller!.text.length));
+          TextPosition(offset: controller!.text.length),
+        );
       },
     );
 

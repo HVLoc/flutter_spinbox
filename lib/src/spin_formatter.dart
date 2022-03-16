@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 // ignore_for_file: public_member_api_docs
@@ -34,7 +33,9 @@ class SpinFormatter extends TextInputFormatter {
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     final input = newValue.text;
     if (input.isEmpty) {
       return newValue;

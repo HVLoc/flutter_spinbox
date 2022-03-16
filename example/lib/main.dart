@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_spinbox_fork/cupertino.dart';
 
 void main() => runApp(
@@ -64,7 +63,10 @@ class HorizontalSpinBoxPage extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 16),
                   ),
                   CupertinoSpinBox(
-                    min: 0.0, max: 999999999.0, value: 999,numOfDecimals: 3,
+                    min: 0.0,
+                    max: 999999999.0,
+                    value: 999,
+                    numOfDecimals: 5,
                   )
                 ],
               ),

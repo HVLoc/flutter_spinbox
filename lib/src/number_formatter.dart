@@ -8,15 +8,20 @@ class NumericTextFormatter extends TextInputFormatter {
   NumericTextFormatter({this.numOfInteger = 3, this.decimals = 0});
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     if (newValue.text.isEmpty) {
       return newValue.copyWith(text: '');
     } else if (newValue.text.compareTo(oldValue.text) != 0) {
-      if (newValue.text.replaceAll(RegExp(r"[0-9.,]"), '').isNotEmpty) {
-        return newValue = oldValue;
+      if (newValue.text.replaceAll(RegExp("[0-9.,]"), '').isNotEmpty) {
+        return oldValue;
       }
-      final newString = formatCurrencyForeign(newValue.text,
-          numOfInteger: numOfInteger, decimals: decimals);
+      final newString = formatCurrencyForeign(
+        newValue.text,
+        numOfInteger: numOfInteger,
+        decimals: decimals,
+      );
 
       return TextEditingValue(
         text: newString,
@@ -33,23 +38,28 @@ double? formatNumberCurrency(String text) {
   return double.tryParse(text.replaceAll(',', ''));
 }
 
-String formatCurrencyForeign(dynamic number,
-    {int numOfInteger = 3, int decimals = 0}) {
+String formatCurrencyForeign(
+  dynamic number, {
+  int numOfInteger = 3,
+  int decimals = 0,
+}) {
   String first = number.toString().substring(
-      0,
-      number.toString().contains('.')
-          ? number.toString().lastIndexOf('.')
-          : null);
+        0,
+        number.toString().contains('.')
+            ? number.toString().lastIndexOf('.')
+            : null,
+      );
   final int firstNumber = numOfInteger +
       ((numOfInteger % 3 != 0) ? numOfInteger ~/ 3 : ((numOfInteger ~/ 3) - 1));
   if (first.length >= firstNumber) {
     first = first.substring(0, firstNumber);
   }
   String last = number.toString().substring(
-      number.toString().contains('.')
-          ? number.toString().lastIndexOf('.')
-          : number.toString().length,
-      number.toString().length);
+        number.toString().contains('.')
+            ? number.toString().lastIndexOf('.')
+            : number.toString().length,
+        number.toString().length,
+      );
   if (last.length >= decimals + 2) {
     last = last.substring(0, decimals + 1);
   }

@@ -21,8 +21,6 @@
 // SOFTWARE.
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinbox_fork/src/number_formatter.dart';
 
 import '../base_spin_box.dart';
@@ -288,7 +286,8 @@ class _CupertinoSpinBoxState extends BaseSpinBoxState<CupertinoSpinBox> {
       onSubmitted: fixupValue,
       onTap: () {
         controller!.selection = TextSelection.fromPosition(
-            TextPosition(offset: controller!.text.length));
+          TextPosition(offset: controller!.text.length),
+        );
       },
     );
 
